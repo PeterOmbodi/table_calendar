@@ -185,7 +185,7 @@ class CalendarLogic {
 
   DateTime _getFirstDay({@required bool includeInvisible}) {
     if (_calendarFormat.value == CalendarFormat.month && !includeInvisible) {
-      return Utils.firstDayOfMonth(_focusedDay);
+      return _firstDayOfMonth(_focusedDay);
     } else {
       return _visibleDays.value.first;
     }
@@ -193,11 +193,7 @@ class CalendarLogic {
 
   DateTime _getLastDay({@required bool includeInvisible}) {
     if (_calendarFormat.value == CalendarFormat.month && !includeInvisible) {
-      var last = Utils.lastDayOfMonth(_focusedDay);
-      if (last.hour == 23) {
-        last = last.add(Duration(hours: 1));
-      }
-      return last;
+      return _lastDayOfMonth(_focusedDay);
     } else {
       return _visibleDays.value.last;
     }
@@ -227,20 +223,11 @@ class CalendarLogic {
   }
 
   List<DateTime> _daysInMonth(DateTime month) {
-    final first = Utils.firstDayOfMonth(month);
+    final first = _firstDayOfMonth(month);
     final daysBefore = _startingDayOfWeek == StartingDayOfWeek.sunday ? first.weekday % 7 : first.weekday - 1;
-    var firstToDisplay = first.subtract(Duration(days: daysBefore));
+    final firstToDisplay = first.subtract(Duration(days: daysBefore));
 
-    if (firstToDisplay.hour == 23) {
-      firstToDisplay = firstToDisplay.add(Duration(hours: 1));
-    }
-
-    var last = Utils.lastDayOfMonth(month);
-
-    if (last.hour == 23) {
-      last = last.add(Duration(hours: 1));
-    }
-
+    final last = _lastDayOfMonth(month);
     var daysAfter = 7 - last.weekday;
 
     if (_startingDayOfWeek == StartingDayOfWeek.sunday) {
@@ -252,12 +239,7 @@ class CalendarLogic {
       daysAfter++;
     }
 
-    var lastToDisplay = last.add(Duration(days: daysAfter));
-
-    if (lastToDisplay.hour == 1) {
-      lastToDisplay = lastToDisplay.subtract(Duration(hours: 1));
-    }
-
+    final lastToDisplay = last.add(Duration(days: daysAfter));
     return Utils.daysInRange(firstToDisplay, lastToDisplay).toList();
   }
 
@@ -281,6 +263,16 @@ class CalendarLogic {
 
     final increaseNum = _startingDayOfWeek == StartingDayOfWeek.sunday ? day.weekday % 7 : day.weekday - 1;
     return day.add(Duration(days: 7 - increaseNum));
+  }
+
+  DateTime _firstDayOfMonth(DateTime month) {
+    return DateTime.utc(month.year, month.month, 1, 12);
+  }
+
+  DateTime _lastDayOfMonth(DateTime month) {
+    final date =
+        month.month < 12 ? DateTime.utc(month.year, month.month + 1, 1, 12) : DateTime.utc(month.year + 1, 1, 1, 12);
+    return date.subtract(const Duration(days: 1));
   }
 
   bool isSelected(DateTime day) {

@@ -1,3 +1,28 @@
+## [1.2.5]
+
+* Fixed last day of month animation issue
+
+## [1.2.4]
+
+* Improved DateTime logic
+* Event markers can now be set to overflow cell boundaries
+
+## [1.2.3]
+
+* Added startDay and endDay to allow users to specify available date range
+* Added unavailableStyle and unavailableDayBuilder for days outside of given date range
+* Added onUnavailableDaySelected callback
+* Unavailable days will not display event markers
+
+## [1.2.2]
+
+* Fixed issue with Markers being null
+
+## [1.2.1]
+
+* RowHeight can now be set as a fixed value
+* MaxMarkersAmount will now affect MarkersBuilder
+
 ## [1.2.0]
 
 * Added holiday support
