@@ -171,6 +171,10 @@ class CalendarController {
     _calendarFormat.value = value;
   }
 
+  void setEvents(Map<DateTime, List> events){
+    _events = events;
+  }
+
   /// Sets selected day to a given `value`.
   /// Use `runCallback: true` if this should trigger `OnDaySelected` callback.
   void setSelectedDay(
