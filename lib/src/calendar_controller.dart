@@ -171,6 +171,7 @@ class CalendarController {
     _calendarFormat.value = value;
   }
 
+  //fix
   void setEvents(Map<DateTime, List> events){
     _events = events;
   }
